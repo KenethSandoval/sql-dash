@@ -12,6 +12,8 @@ type KeyMap struct {
 	Quit key.Binding
 }
 
+var Navigation = []string{"Tab1", "Tab2"}
+
 var DefaultKeyMap = KeyMap{
 	Quit: key.NewBinding(
 		key.WithKeys("q", "ctrl+q"),
@@ -80,6 +82,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) View() string {
 	var items []string
+
+	for _, nav := range Navigation {
+		items = append(items, tab.Render(nav))
+	}
 
 	row := lipgloss.JoinHorizontal(
 		lipgloss.Top,
