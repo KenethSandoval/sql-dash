@@ -9,12 +9,23 @@ import (
 )
 
 type KeyMap struct {
+	FirstTab  key.Binding
+	SecondTab key.Binding
+	// more tab
 	Quit key.Binding
 }
 
 var Navigation = []string{"Tab1", "Tab2"}
 
 var DefaultKeyMap = KeyMap{
+	FirstTab: key.NewBinding(
+		key.WithKeys("f1"),
+		key.WithHelp("f1", "First tab"),
+	),
+	SecondTab: key.NewBinding(
+		key.WithKeys("f2"),
+		key.WithHelp("f2", "Second tab"),
+	),
 	Quit: key.NewBinding(
 		key.WithKeys("q", "ctrl+q"),
 		key.WithHelp("q/Q", "quit"),
