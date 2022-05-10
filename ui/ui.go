@@ -1,11 +1,12 @@
 package ui
 
 import (
+	"adminmsyql/ui/navigation"
+	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 )
 
 type KeyMap struct {
@@ -14,8 +15,6 @@ type KeyMap struct {
 	// more tab
 	Quit key.Binding
 }
-
-var Navigation = []string{"Tab1", "Tab2"}
 
 var DefaultKeyMap = KeyMap{
 	FirstTab: key.NewBinding(
@@ -32,48 +31,10 @@ var DefaultKeyMap = KeyMap{
 	),
 }
 
-var (
-	highlight = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
-
-	activeTabBorder = lipgloss.Border{
-		Top:         "─",
-		Bottom:      " ",
-		Left:        "│",
-		Right:       "│",
-		TopLeft:     "╭",
-		TopRight:    "╮",
-		BottomLeft:  "┘",
-		BottomRight: "└",
-	}
-
-	tabBorder = lipgloss.Border{
-		Top:         "─",
-		Bottom:      "─",
-		Left:        "│",
-		Right:       "│",
-		TopLeft:     "╭",
-		TopRight:    "╮",
-		BottomLeft:  "┴",
-		BottomRight: "┴",
-	}
-
-	tab = lipgloss.NewStyle().
-		Border(tabBorder, true).
-		BorderForeground(highlight).
-		Padding(0, 1)
-
-	activeTab = tab.Copy().Border(activeTabBorder, true)
-
-	tabGap = tab.Copy().
-		BorderTop(false).
-		BorderLeft(false).
-		BorderRight(false)
-)
-
-const width = 96
-
 type Model struct {
 	keymap KeyMap
+	nav    navigation.Model
+	debug  bool
 }
 
 func (m Model) Init() tea.Cmd {
@@ -81,42 +42,43 @@ func (m Model) Init() tea.Cmd {
 }
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	cmds := make([]tea.Cmd, 0)
+
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, DefaultKeyMap.Quit):
+			m.debug = true
 			return m, tea.Quit
+		case key.Matches(msg, DefaultKeyMap.FirstTab):
+			m.nav.NthTab(1)
+			fmt.Println("1")
+			return m, nil
+		case key.Matches(msg, DefaultKeyMap.SecondTab):
+			m.nav.NthTab(2)
+			fmt.Println("2")
+			return m, nil
 		}
 	}
-	return m, nil
+
+	nav, cmd := m.nav.Update(msg)
+	m.nav = nav
+	cmds = append(cmds, cmd)
+
+	return m, tea.Batch(cmds...)
 }
 
 func (m Model) View() string {
-	var items []string
-
-	for _, nav := range Navigation {
-		items = append(items, tab.Render(nav))
+	if m.debug {
+		return "Bye\n"
 	}
 
-	row := lipgloss.JoinHorizontal(
-		lipgloss.Top,
-		items...,
-	)
-
-	gap := tabGap.Render(strings.Repeat(" ", max(0, width-lipgloss.Width(row)-2)))
-	row = lipgloss.JoinHorizontal(lipgloss.Bottom, row, gap)
-
-	return lipgloss.JoinHorizontal(lipgloss.Top, row, "\n\n")
+	s := strings.Builder{}
+	s.WriteString(m.nav.View() + "\n\n")
+	return s.String()
 }
 
 func NewProgram() *tea.Program {
 	m := Model{}
 	return tea.NewProgram(m)
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
