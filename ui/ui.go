@@ -2,7 +2,8 @@ package ui
 
 import (
 	"adminmsyql/ui/navigation"
-	"fmt"
+	"adminmsyql/ui/views"
+	"adminmsyql/ui/views/rg"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
@@ -18,12 +19,13 @@ type KeyMap struct {
 
 var DefaultKeyMap = KeyMap{
 	FirstTab: key.NewBinding(
-		key.WithKeys("f1"),
-		key.WithHelp("f1", "First tab"),
+		// TODO: MOD + 1 or F1 test
+		key.WithKeys("1"),
+		key.WithHelp("1", "First tab"),
 	),
 	SecondTab: key.NewBinding(
-		key.WithKeys("f2"),
-		key.WithHelp("f2", "Second tab"),
+		key.WithKeys("2"),
+		key.WithHelp("2", "Second tab"),
 	),
 	Quit: key.NewBinding(
 		key.WithKeys("q", "ctrl+q"),
@@ -34,7 +36,18 @@ var DefaultKeyMap = KeyMap{
 type Model struct {
 	keymap KeyMap
 	nav    navigation.Model
-	debug  bool
+	views  []views.View
+}
+
+func NewModel() Model {
+	m := Model{
+		keymap: DefaultKeyMap,
+	}
+	m.nav = navigation.NewModel()
+
+	m.views = append(m.views, rg.NewModel())
+
+	return m
 }
 
 func (m Model) Init() tea.Cmd {
@@ -47,19 +60,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
-		case key.Matches(msg, DefaultKeyMap.Quit):
-			m.debug = true
+		case key.Matches(msg, m.keymap.Quit):
 			return m, tea.Quit
-		case key.Matches(msg, DefaultKeyMap.FirstTab):
+		case key.Matches(msg, m.keymap.FirstTab):
 			m.nav.NthTab(1)
-			fmt.Println("1")
 			return m, nil
-		case key.Matches(msg, DefaultKeyMap.SecondTab):
+		case key.Matches(msg, m.keymap.SecondTab):
 			m.nav.NthTab(2)
-			fmt.Println("2")
 			return m, nil
 		}
 	}
+
+	v, cmd := m.views[m.nav.CurrentId].Update(msg)
+	m.views[m.nav.CurrentId] = v
+	cmds = append(cmds, cmd)
 
 	nav, cmd := m.nav.Update(msg)
 	m.nav = nav
@@ -69,16 +83,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	if m.debug {
-		return "Bye\n"
-	}
-
 	s := strings.Builder{}
 	s.WriteString(m.nav.View() + "\n\n")
+	s.WriteString(m.views[m.nav.CurrentId].View())
 	return s.String()
-}
-
-func NewProgram() *tea.Program {
-	m := Model{}
-	return tea.NewProgram(m)
 }
