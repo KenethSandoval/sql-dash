@@ -2,6 +2,7 @@ package ui
 
 import (
 	"adminmsyql/ui/navigation"
+	"adminmsyql/ui/uictx"
 	"adminmsyql/ui/views"
 	"adminmsyql/ui/views/rg"
 	"strings"
@@ -37,6 +38,7 @@ type Model struct {
 	keymap KeyMap
 	nav    navigation.Model
 	views  []views.View
+	ctx    uictx.Ctx
 }
 
 func NewModel() Model {
@@ -45,6 +47,7 @@ func NewModel() Model {
 	}
 	m.nav = navigation.NewModel()
 
+	m.views = append(m.views, rg.NewModel())
 	m.views = append(m.views, rg.NewModel())
 
 	return m
@@ -69,6 +72,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.nav.NthTab(2)
 			return m, nil
 		}
+
+	case tea.WindowSizeMsg:
+		m.setSizes(msg.Width, msg.Height)
+		for i := range m.views {
+			v, cmd := m.views[i].Update(msg)
+			m.views[i] = v
+			cmds = append(cmds, cmd)
+		}
 	}
 
 	v, cmd := m.views[m.nav.CurrentId].Update(msg)
@@ -87,4 +98,11 @@ func (m Model) View() string {
 	s.WriteString(m.nav.View() + "\n\n")
 	s.WriteString(m.views[m.nav.CurrentId].View())
 	return s.String()
+}
+
+func (m Model) setSizes(winWidth int, winHeight int) {
+	(*&m.ctx).Screen[0] = winWidth
+	(*&m.ctx).Screen[1] = winHeight
+	m.ctx.Content[0] = m.ctx.Screen[0]
+	m.ctx.Content[1] = m.ctx.Screen[1] - 5
 }

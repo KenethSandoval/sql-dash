@@ -2,6 +2,7 @@ package rg
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
@@ -31,6 +32,15 @@ var (
 			BorderRight(true).
 			BorderBottom(true)
 )
+
+type item struct {
+	title       string
+	description string
+}
+
+func (i item) Title() string       { return i.title }
+func (i item) Description() string { return i.description }
+func (i item) FilterValue() string { return i.title }
 
 type KeyMap struct {
 	Refresh     key.Binding
@@ -68,12 +78,16 @@ func (m Model) Init() tea.Cmd {
 }
 
 func NewModel() Model {
+	procs := []list.Item{
+		item{title: "root", description: "msyql"},
+		item{title: "douglas", description: "msyql"},
+	}
 	m := Model{
 		keymap:  DefaultKeyMap,
 		focused: 0,
 	}
 
-	m.list = list.New(m.items, list.NewDefaultDelegate(), 0, 0)
+	m.list = list.New(procs, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Users"
 
 	return m
@@ -94,6 +108,26 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.focused = 0
 			}
 		}
+
+	case tea.WindowSizeMsg:
+		listWidth := int(math.Floor(float64(0) / 4.0))
+		listHeigh := 0 - 1
+		viewportWidth := 0 - listWidth - 4
+		viewportHeight := 0 - 1
+
+		listStyle.Width(listWidth)
+		listStyle.Height(listHeigh)
+		m.list.SetSize(listWidth-2, listHeigh-2)
+
+		viewportStyle.Width(viewportWidth)
+		viewportStyle.Height(viewportHeight)
+		m.viewport = viewport.New(viewportWidth-4, viewportHeight-4)
+		m.viewport.Width = viewportWidth - 4
+		m.viewport.Height = viewportHeight - 4
+
+	case []list.Item:
+		m.items = msg
+		m.list.SetItems(m.items)
 	}
 
 	var cmd tea.Cmd
