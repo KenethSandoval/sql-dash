@@ -1,6 +1,7 @@
 package navigation
 
 import (
+	"adminmsyql/ui/uictx"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/spinner"
@@ -46,20 +47,24 @@ var (
 		BorderRight(false)
 )
 
-const width = 96
-
-var Navigation = []string{"Users", "Tables"}
+var Navigation = []string{"Users"}
 
 // Model id tab navigation
 type Model struct {
 	CurrentId int
+	ctx       *uictx.Ctx
 	spinner   spinner.Model
 }
 
-func NewModel() Model {
+func NewModel(ctx *uictx.Ctx) Model {
 	m := Model{
 		CurrentId: 0,
+		ctx:       ctx,
 	}
+
+	m.spinner = spinner.New()
+	m.spinner.Spinner = spinner.Dot
+	m.spinner.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("205"))
 
 	return m
 }
@@ -70,6 +75,10 @@ func (m Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	var cmds []tea.Cmd
+
+	if m.ctx.Loading == true {
+		cmds = append(cmds, m.spinner.Tick)
+	}
 
 	switch msg := msg.(type) {
 	case spinner.TickMsg:
@@ -96,8 +105,13 @@ func (m Model) View() string {
 		items...,
 	)
 
-	gap := tabGap.Render(strings.Repeat(" ", max(0, width-lipgloss.Width(row)-4)))
-	row = lipgloss.JoinHorizontal(lipgloss.Bottom, row, gap, " ")
+	if m.ctx.Loading == false {
+		gap := tabGap.Render(strings.Repeat(" ", max(0, m.ctx.Screen[0]-lipgloss.Width(row)-2)))
+		row = lipgloss.JoinHorizontal(lipgloss.Bottom, row, gap)
+	} else {
+		gap := tabGap.Render(strings.Repeat(" ", max(0, m.ctx.Screen[0]-lipgloss.Width(row)-4)))
+		row = lipgloss.JoinHorizontal(lipgloss.Bottom, row, gap, " ", m.spinner.View())
+	}
 
 	return lipgloss.JoinHorizontal(lipgloss.Top, row, "\n\n")
 }

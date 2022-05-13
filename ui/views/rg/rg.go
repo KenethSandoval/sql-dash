@@ -1,6 +1,7 @@
 package rg
 
 import (
+	"adminmsyql/ui/uictx"
 	"fmt"
 	"math"
 
@@ -33,15 +34,6 @@ var (
 			BorderBottom(true)
 )
 
-type item struct {
-	title       string
-	description string
-}
-
-func (i item) Title() string       { return i.title }
-func (i item) Description() string { return i.description }
-func (i item) FilterValue() string { return i.title }
-
 type KeyMap struct {
 	Refresh     key.Binding
 	Select      key.Binding
@@ -68,6 +60,7 @@ type Model struct {
 	list     list.Model
 	items    []list.Item
 	viewport viewport.Model
+	ctx      *uictx.Ctx
 
 	focused    int
 	focusables [2]tea.Model
@@ -77,7 +70,7 @@ func (m Model) Init() tea.Cmd {
 	return nil
 }
 
-func NewModel() Model {
+func NewModel(ctx *uictx.Ctx) Model {
 
 	m := Model{
 		keymap:  DefaultKeyMap,
@@ -86,6 +79,7 @@ func NewModel() Model {
 
 	m.list = list.New(m.items, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Users"
+	m.ctx = ctx
 
 	return m
 }
@@ -107,10 +101,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	case tea.WindowSizeMsg:
-		listWidth := int(math.Floor(float64(0) / 4.0))
-		listHeigh := 0 - 1
-		viewportWidth := 0 - listWidth - 4
-		viewportHeight := 0 - 1
+		listWidth := int(math.Floor(float64(m.ctx.Content[0]) / 4.0))
+		listHeigh := m.ctx.Content[1] - 1
+		viewportWidth := m.ctx.Content[0] - listWidth - 4
+		viewportHeight := m.ctx.Content[1] - 1
 
 		listStyle.Width(listWidth)
 		listStyle.Height(listHeigh)
@@ -125,6 +119,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case []list.Item:
 		m.items = msg
 		m.list.SetItems(m.items)
+		m.ctx.Loading = false
 	}
 
 	var cmd tea.Cmd

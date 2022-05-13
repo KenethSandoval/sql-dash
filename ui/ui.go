@@ -46,10 +46,9 @@ func NewModel(ctx *uictx.Ctx) Model {
 		keymap: DefaultKeyMap,
 		ctx:    ctx,
 	}
-	m.nav = navigation.NewModel()
+	m.nav = navigation.NewModel(m.ctx)
 
-	m.views = append(m.views, rg.NewModel())
-	m.views = append(m.views, rg.NewModel())
+	m.views = append(m.views, rg.NewModel(m.ctx))
 
 	return m
 }
@@ -102,8 +101,8 @@ func (m Model) View() string {
 }
 
 func (m Model) setSizes(winWidth int, winHeight int) {
-	(*&m.ctx).Screen[0] = winWidth
-	(*&m.ctx).Screen[1] = winHeight
+	(*m.ctx).Screen[0] = winWidth
+	(*m.ctx).Screen[1] = winHeight
 	m.ctx.Content[0] = m.ctx.Screen[0]
 	m.ctx.Content[1] = m.ctx.Screen[1] - 5
 }
