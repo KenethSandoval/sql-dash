@@ -1,16 +1,36 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
+	"adminmsyql/dash"
 	"adminmsyql/ui"
+	"adminmsyql/ui/uictx"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
-	if err := tea.NewProgram(ui.NewModel(), tea.WithAltScreen()).Start(); err != nil {
+	var provider = "mysql"
+
+	flag.StringVar(&provider, "c", "mysql", "db connect for inspect")
+	flag.Parse()
+
+	if provider == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
+
+	client, err := dash.New(&provider)
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := uictx.New(&client)
+
+	if err := tea.NewProgram(ui.NewModel(&ctx), tea.WithAltScreen()).Start(); err != nil {
 		fmt.Println("Error running program: ", err)
 		os.Exit(1)
 	}

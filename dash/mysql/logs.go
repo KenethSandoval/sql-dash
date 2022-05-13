@@ -1,16 +1,11 @@
 package mysql
 
-import (
-	"database/sql"
-)
+import "database/sql"
 
-type Mysql struct {
-}
-
-func (client *Mysql) ListProfile(profile *string) ([]string, error) {
+func New() []string {
 	var usersFind []string
 
-	db, err := sql.Open("mysql", "root:@/mysql")
+	db, err := sql.Open("mysql", "root:root@/mysql")
 
 	if err != nil {
 		panic(err)
@@ -56,5 +51,5 @@ func (client *Mysql) ListProfile(profile *string) ([]string, error) {
 		panic(err.Error())
 	}
 
-	return usersFind, nil
+	return usersFind
 }

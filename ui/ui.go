@@ -38,12 +38,13 @@ type Model struct {
 	keymap KeyMap
 	nav    navigation.Model
 	views  []views.View
-	ctx    uictx.Ctx
+	ctx    *uictx.Ctx
 }
 
-func NewModel() Model {
+func NewModel(ctx *uictx.Ctx) Model {
 	m := Model{
 		keymap: DefaultKeyMap,
+		ctx:    ctx,
 	}
 	m.nav = navigation.NewModel()
 
