@@ -1,18 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	//"fmt"
+	//"os"
 
-	"adminmsyql/ui"
-
-	tea "github.com/charmbracelet/bubbletea"
+	//"adminmsyql/ui"
+	"adminmsyql/dash"
+	//tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
-
-	if err := tea.NewProgram(ui.NewModel(), tea.WithAltScreen()).Start(); err != nil {
+	dash.Dash()
+	/*if err := tea.NewProgram(ui.NewModel(), tea.WithAltScreen()).Start(); err != nil {
 		fmt.Println("Error running program: ", err)
 		os.Exit(1)
-	}
+	}*/
 }
