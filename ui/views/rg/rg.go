@@ -78,16 +78,13 @@ func (m Model) Init() tea.Cmd {
 }
 
 func NewModel() Model {
-	procs := []list.Item{
-		item{title: "root", description: "msyql"},
-		item{title: "douglas", description: "msyql"},
-	}
+
 	m := Model{
 		keymap:  DefaultKeyMap,
 		focused: 0,
 	}
 
-	m.list = list.New(procs, list.NewDefaultDelegate(), 0, 0)
+	m.list = list.New(m.items, list.NewDefaultDelegate(), 0, 0)
 	m.list.Title = "Users"
 
 	return m

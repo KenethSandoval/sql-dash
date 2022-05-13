@@ -2,12 +2,24 @@ package dash
 
 import (
 	"database/sql"
-	"fmt"
+
+	"adminmsyql/dash/adapter"
+	"adminmsyql/dash/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func Dash() {
+// Dash
+type Dash interface {
+	//
+	GetCapabilities() []adapter.Capability
+	//
+	LoadProfile(profile *string) error
+	//
+	ListCredentials() ([]models.Credential, error)
+}
+
+func New() []string {
 	var usersFind []string
 
 	db, err := sql.Open("mysql", "root:root@/mysql")
@@ -56,6 +68,5 @@ func Dash() {
 		panic(err.Error())
 	}
 
-	fmt.Println(usersFind)
-
+	return usersFind
 }
