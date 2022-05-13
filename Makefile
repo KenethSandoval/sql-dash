@@ -3,8 +3,10 @@ SHELL=/bin/bash
 .PHONY: all
 
 all: compile
-clean:
-	rm -rv -- sqldash
+
+clean: stop
+	rm -rfv sqldash
+	$(shell docker container rm $(shell docker ps -a --format "{{.ID}}"))
 
 compile:
 	@echo "Compiling..."
