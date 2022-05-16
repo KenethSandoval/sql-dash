@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"adminmsyql/dash/adapter"
 	"database/sql"
 )
 
@@ -57,4 +58,20 @@ func (client *Mysql) ListProfile(profile *string) ([]string, error) {
 	}
 
 	return usersFind, nil
+}
+
+func (client *Mysql) GetCapabilities() []adapter.Capability {
+	var caps []adapter.Capability
+
+	caps = append(caps, adapter.Capability{
+		ID:   "users",
+		Name: "Users DB",
+	})
+
+	caps = append(caps, adapter.Capability{
+		ID:   "tables",
+		Name: "Tables DB",
+	})
+
+	return caps
 }

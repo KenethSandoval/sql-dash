@@ -1,6 +1,7 @@
 package dash
 
 import (
+	"adminmsyql/dash/adapter"
 	"adminmsyql/dash/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -9,9 +10,12 @@ import (
 // Dash
 type Dash interface {
 	//
-	// GetCapabilities() []adapter.Capability
+	GetCapabilities() []adapter.Capability
 	//
 	ListProfile(profile *string) ([]string, error)
+
+	//
+	ListTables() ([]string, error)
 }
 
 func New(clientType *string) (Dash, error) {

@@ -5,6 +5,7 @@ import (
 	"adminmsyql/ui/uictx"
 	"adminmsyql/ui/views"
 	"adminmsyql/ui/views/rg"
+	"adminmsyql/ui/views/tables"
 	"strings"
 
 	"github.com/charmbracelet/bubbles/key"
@@ -48,7 +49,14 @@ func NewModel(ctx *uictx.Ctx) Model {
 	}
 	m.nav = navigation.NewModel(m.ctx)
 
-	m.views = append(m.views, rg.NewModel(m.ctx))
+	for _, capability := range (*m.ctx.Client).GetCapabilities() {
+		switch capability.ID {
+		case "users":
+			m.views = append(m.views, rg.NewModel(m.ctx))
+		case "tables":
+			m.views = append(m.views, tables.NewModel(m.ctx))
+		}
+	}
 
 	return m
 }

@@ -47,7 +47,7 @@ var (
 		BorderRight(false)
 )
 
-var Navigation = []string{"Users"}
+var Navigation = []string{}
 
 // Model id tab navigation
 type Model struct {
@@ -60,6 +60,10 @@ func NewModel(ctx *uictx.Ctx) Model {
 	m := Model{
 		CurrentId: 0,
 		ctx:       ctx,
+	}
+
+	for _, capability := range (*ctx.Client).GetCapabilities() {
+		Navigation = append(Navigation, capability.Name)
 	}
 
 	m.spinner = spinner.New()

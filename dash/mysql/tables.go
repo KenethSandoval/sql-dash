@@ -2,10 +2,10 @@ package mysql
 
 import "database/sql"
 
-func New() []string {
+func (client *Mysql) ListTables() ([]string, error) {
 	var usersFind []string
 
-	db, err := sql.Open("mysql", "root:root@/mysql")
+	db, err := sql.Open("mysql", "root:@/mysql")
 
 	if err != nil {
 		panic(err)
@@ -51,5 +51,5 @@ func New() []string {
 		panic(err.Error())
 	}
 
-	return usersFind
+	return usersFind, nil
 }
