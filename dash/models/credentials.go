@@ -14,5 +14,6 @@ func (credential Credential) Title() string {
 }
 
 func (credential Credential) Description() string {
+	// TODO: return type db
 	return "mysql"
 }

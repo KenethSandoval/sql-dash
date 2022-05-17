@@ -2,6 +2,7 @@ package dash
 
 import (
 	"adminmsyql/dash/adapter"
+	"adminmsyql/dash/models"
 	"adminmsyql/dash/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -12,7 +13,7 @@ type Dash interface {
 	//
 	GetCapabilities() []adapter.Capability
 	//
-	ListProfile(profile *string) ([]string, error)
+	ListProfile() ([]models.Credential, error)
 
 	//
 	ListTables() ([]string, error)

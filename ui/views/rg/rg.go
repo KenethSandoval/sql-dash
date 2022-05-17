@@ -91,6 +91,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, m.keymap.Refresh):
+			m.ctx.Loading = true
 			cmds = append(cmds, m.refresh())
 
 		case key.Matches(msg, m.keymap.SwitchFocus):
@@ -154,7 +155,16 @@ func (m Model) View() string {
 func (m *Model) refresh() tea.Cmd {
 	return func() tea.Msg {
 		var items []list.Item
-		fmt.Println("refresh")
+
+		users, err := (*m.ctx.Client).ListProfile()
+		if err != nil {
+			fmt.Printf("%s", err)
+		}
+
+		for _, user := range users {
+			items = append(items, user)
+		}
+
 		return items
 	}
 }

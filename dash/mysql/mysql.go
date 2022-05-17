@@ -2,16 +2,17 @@ package mysql
 
 import (
 	"adminmsyql/dash/adapter"
+	"adminmsyql/dash/models"
 	"database/sql"
 )
 
 type Mysql struct {
 }
 
-func (client *Mysql) ListProfile(profile *string) ([]string, error) {
-	var usersFind []string
+func (client *Mysql) ListProfile() ([]models.Credential, error) {
+	var users []models.Credential
 
-	db, err := sql.Open("mysql", "root:@/mysql")
+	db, err := sql.Open("mysql", "root:root@/mysql")
 
 	if err != nil {
 		panic(err)
@@ -50,14 +51,18 @@ func (client *Mysql) ListProfile(profile *string) ([]string, error) {
 			} else {
 				value = string(col)
 			}
-			usersFind = append(usersFind, value)
+			userFind := models.Credential{
+				Name: value,
+			}
+
+			users = append(users, userFind)
 		}
 	}
 	if err = rows.Err(); err != nil {
 		panic(err.Error())
 	}
 
-	return usersFind, nil
+	return users, nil
 }
 
 func (client *Mysql) GetCapabilities() []adapter.Capability {
