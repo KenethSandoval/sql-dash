@@ -1,6 +1,7 @@
 package rg
 
 import (
+	"adminmsyql/dash/models"
 	"adminmsyql/ui/uictx"
 	"fmt"
 	"math"
@@ -99,6 +100,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.focused >= len(m.focusables) {
 				m.focused = 0
 			}
+
+		case key.Matches(msg, m.keymap.Select):
+			_, ok := m.list.SelectedItem().(models.Credential)
+			if ok {
+				m.viewport.SetContent(m.renderViewport())
+				return m, nil
+			}
 		}
 
 	case tea.WindowSizeMsg:
@@ -167,4 +175,12 @@ func (m *Model) refresh() tea.Cmd {
 
 		return items
 	}
+}
+
+func (m *Model) renderViewport() string {
+	var vp string = ""
+
+	vp = fmt.Sprintf("%s\n\nInfo: %s \n", "Name usuario", "Creacion maybe...")
+
+	return vp
 }
