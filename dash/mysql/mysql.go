@@ -19,44 +19,28 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT user FROM user")
+	rows, err := db.Query("SELECT user, host FROM user where user not like '%mysql%'")
 	if err != nil {
 		panic(err.Error())
-	}
-
-	colums, err := rows.Columns()
-	if err != nil {
-		panic(err.Error())
-	}
-
-	// Make a slice for the values
-	values := make([]sql.RawBytes, len(colums))
-
-	scanArgs := make([]interface{}, len(values))
-	for i := range values {
-		scanArgs[i] = &values[i]
 	}
 
 	for rows.Next() {
-		err = rows.Scan(scanArgs...)
+		var (
+			user string
+			host string
+		)
+
+		err = rows.Scan(&user, &host)
 		if err != nil {
 			panic(err.Error())
 		}
 
-		var value string
-
-		for _, col := range values {
-			if col == nil {
-				value = "NULL"
-			} else {
-				value = string(col)
-			}
-			userFind := models.Credential{
-				Name: value,
-			}
-
-			users = append(users, userFind)
+		userFind := models.Credential{
+			Name: user,
+			Host: host,
 		}
+
+		users = append(users, userFind)
 	}
 	if err = rows.Err(); err != nil {
 		panic(err.Error())

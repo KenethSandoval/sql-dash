@@ -154,7 +154,16 @@ func (m Model) View() string {
 func (m *Model) refresh() tea.Cmd {
 	return func() tea.Msg {
 		var items []list.Item
-		fmt.Println("refresh")
+
+		tables, err := (*m.ctx.Client).ListTables()
+		if err != nil {
+			fmt.Printf("%s", err)
+		}
+
+		for _, table := range tables {
+			items = append(items, table)
+		}
+
 		return items
 	}
 }

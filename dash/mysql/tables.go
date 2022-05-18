@@ -1,18 +1,21 @@
 package mysql
 
-import "database/sql"
+import (
+	"adminmsyql/dash/models"
+	"database/sql"
+)
 
-func (client *Mysql) ListTables() ([]string, error) {
-	var usersFind []string
+func (client *Mysql) ListTables() ([]models.Tables, error) {
+	var tables []models.Tables
 
-	db, err := sql.Open("mysql", "root:@/mysql")
+	db, err := sql.Open("mysql", "root:root@/testdash")
 
 	if err != nil {
 		panic(err)
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT user FROM user")
+	rows, err := db.Query("SHOW TABLES")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -44,12 +47,15 @@ func (client *Mysql) ListTables() ([]string, error) {
 			} else {
 				value = string(col)
 			}
-			usersFind = append(usersFind, value)
+			table := models.Tables{
+				Name: value,
+			}
+			tables = append(tables, table)
 		}
 	}
 	if err = rows.Err(); err != nil {
 		panic(err.Error())
 	}
 
-	return usersFind, nil
+	return tables, nil
 }

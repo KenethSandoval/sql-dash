@@ -16,7 +16,7 @@ type Dash interface {
 	ListProfile() ([]models.Credential, error)
 
 	//
-	ListTables() ([]string, error)
+	ListTables() ([]models.Tables, error)
 }
 
 func New(clientType *string) (Dash, error) {
