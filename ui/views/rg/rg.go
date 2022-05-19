@@ -180,7 +180,7 @@ func (m *Model) refresh() tea.Cmd {
 func (m *Model) renderViewport() string {
 	var vp string = ""
 
-	vp = fmt.Sprintf("%s\n\nInfo: %s \n", "Name usuario", "Creacion maybe...")
+	vp = fmt.Sprintf("%s\n\nInfo: %s \n", "column new", "Creacion maybe...")
 
 	return vp
 }

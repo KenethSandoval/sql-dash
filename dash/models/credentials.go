@@ -1,8 +1,9 @@
 package models
 
 type Credential struct {
-	Name string
-	Host string
+	Name       string
+	Host       string
+	InsertPriv string
 }
 
 func (crendential Credential) FilterValue() string {
