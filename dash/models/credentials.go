@@ -4,6 +4,7 @@ type Credential struct {
 	Name       string
 	Host       string
 	InsertPriv string
+	SelectPriv string
 }
 
 func (crendential Credential) FilterValue() string {

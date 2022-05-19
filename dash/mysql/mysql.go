@@ -19,7 +19,7 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT user, host, insert_priv FROM user where user not like '%mysql%'")
+	rows, err := db.Query("SELECT user, host, insert_priv, select_priv FROM user where user not like '%mysql%'")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -29,9 +29,10 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 			user       string
 			host       string
 			insertPriv string
+			selectPriv string
 		)
 
-		err = rows.Scan(&user, &host, &insertPriv)
+		err = rows.Scan(&user, &host, &insertPriv, &selectPriv)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -40,6 +41,7 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 			Name:       user,
 			Host:       host,
 			InsertPriv: insertPriv,
+			SelectPriv: selectPriv,
 		}
 
 		users = append(users, userFind)

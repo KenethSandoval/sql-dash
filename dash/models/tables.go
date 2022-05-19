@@ -1,8 +1,17 @@
 package models
 
 type Tables struct {
-	Name string
-	Size string
+	Name  string
+	Field string
+}
+
+type TableDescribe struct {
+	Field   string
+	Type    string
+	Null    string
+	Key     string
+	Default string
+	Extra   string
 }
 
 func (table Tables) FilterValue() string {

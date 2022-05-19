@@ -20,42 +20,74 @@ func (client *Mysql) ListTables() ([]models.Tables, error) {
 		panic(err.Error())
 	}
 
-	colums, err := rows.Columns()
 	if err != nil {
 		panic(err.Error())
 	}
 
-	// Make a slice for the values
-	values := make([]sql.RawBytes, len(colums))
-
-	scanArgs := make([]interface{}, len(values))
-	for i := range values {
-		scanArgs[i] = &values[i]
-	}
-
 	for rows.Next() {
-		err = rows.Scan(scanArgs...)
+		var nameTable string
+		err = rows.Scan(&nameTable)
 		if err != nil {
 			panic(err.Error())
 		}
 
-		var value string
-
-		for _, col := range values {
-			if col == nil {
-				value = "NULL"
-			} else {
-				value = string(col)
-			}
-			table := models.Tables{
-				Name: value,
-			}
-			tables = append(tables, table)
+		table := models.Tables{
+			Name: nameTable,
 		}
-	}
-	if err = rows.Err(); err != nil {
-		panic(err.Error())
+
+		tables = append(tables, table)
+
+		if err = rows.Err(); err != nil {
+			panic(err.Error())
+		}
 	}
 
 	return tables, nil
+}
+
+func (client *Mysql) DescribeTables() ([]models.TableDescribe, error) {
+	var tableDesc []models.TableDescribe
+
+	// TODO: refactor
+	db, err := sql.Open("mysql", "root:root@/testdash")
+
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("DESCRIBE datatest")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	for rows.Next() {
+		var (
+			field     string
+			typeTb    string
+			null      string
+			key       string
+			defaultTb sql.NullString
+			extra     string
+		)
+		err = rows.Scan(&field, &typeTb, &null, &key, &defaultTb, &extra)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		table := models.TableDescribe{
+			Field: field,
+		}
+
+		tableDesc = append(tableDesc, table)
+
+		if err = rows.Err(); err != nil {
+			panic(err.Error())
+		}
+	}
+	return tableDesc, nil
 }

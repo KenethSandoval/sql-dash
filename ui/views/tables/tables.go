@@ -1,6 +1,7 @@
 package tables
 
 import (
+	"adminmsyql/dash/models"
 	"adminmsyql/ui/uictx"
 	"fmt"
 	"math"
@@ -98,6 +99,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.focused >= len(m.focusables) {
 				m.focused = 0
 			}
+		case key.Matches(msg, m.keymap.Select):
+			_, ok := m.list.SelectedItem().(models.Tables)
+			if ok {
+				m.viewport.SetContent(m.renderViewport())
+				return m, nil
+			}
 		}
 
 	case tea.WindowSizeMsg:
@@ -166,4 +173,16 @@ func (m *Model) refresh() tea.Cmd {
 
 		return items
 	}
+}
+
+func (m *Model) renderViewport() string {
+	t, err := (*m.ctx.Client).DescribeTables()
+	if err != nil {
+		fmt.Printf("%s", err)
+	}
+	var vp string = ""
+
+	vp = fmt.Sprintf("%v \n\n", t)
+
+	return vp
 }

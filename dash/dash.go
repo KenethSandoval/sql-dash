@@ -17,6 +17,9 @@ type Dash interface {
 
 	//
 	ListTables() ([]models.Tables, error)
+
+	//
+	DescribeTables() ([]models.TableDescribe, error)
 }
 
 func New(clientType *string) (Dash, error) {

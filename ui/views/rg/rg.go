@@ -102,9 +102,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case key.Matches(msg, m.keymap.Select):
-			_, ok := m.list.SelectedItem().(models.Credential)
+			i, ok := m.list.SelectedItem().(models.Credential)
 			if ok {
-				m.viewport.SetContent(m.renderViewport())
+				m.viewport.SetContent(m.renderViewport(&i))
 				return m, nil
 			}
 		}
@@ -177,10 +177,13 @@ func (m *Model) refresh() tea.Cmd {
 	}
 }
 
-func (m *Model) renderViewport() string {
+func (m *Model) renderViewport(user *models.Credential) string {
 	var vp string = ""
 
-	vp = fmt.Sprintf("%s\n\nInfo: %s \n", "column new", "Creacion maybe...")
+	vp = fmt.Sprintf("\nPrivilegios:\n\n     %s: %s",
+		"Puede realizar sentencias SELECT",
+		user.SelectPriv,
+	)
 
 	return vp
 }
