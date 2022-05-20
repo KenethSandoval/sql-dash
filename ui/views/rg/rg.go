@@ -178,11 +178,39 @@ func (m *Model) refresh() tea.Cmd {
 }
 
 func (m *Model) renderViewport(user *models.Credential) string {
-	var vp string = ""
+	var (
+		vp         string = ""
+		selectPriv string = ""
+		insertPriv string = ""
+	)
 
-	vp = fmt.Sprintf("\nPrivilegios:\n\n     %s: %s",
-		"Puede realizar sentencias SELECT",
-		user.SelectPriv,
+	if user.SelectPriv == "Y" {
+		selectPriv = "Sentencias SELECT"
+	} else {
+		selectPriv = ""
+	}
+
+	if user.InsertPriv == "Y" {
+		insertPriv = "Sentencias INSERT"
+	} else {
+		insertPriv = ""
+	}
+
+	vp = fmt.Sprintf(
+		"%s\n\nPrivilegios \n",
+		"",
+	)
+
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		selectPriv,
+	)
+
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		insertPriv,
 	)
 
 	return vp

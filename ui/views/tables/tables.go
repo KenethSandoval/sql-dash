@@ -176,13 +176,13 @@ func (m *Model) refresh() tea.Cmd {
 }
 
 func (m *Model) renderViewport() string {
-	t, err := (*m.ctx.Client).DescribeTables()
+	_, err := (*m.ctx.Client).DescribeTables()
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
 	var vp string = ""
 
-	vp = fmt.Sprintf("%v \n\n", t)
+	vp = fmt.Sprintf(" Field: %s\n\n\n", "prueba")
 
 	return vp
 }
