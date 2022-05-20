@@ -1,10 +1,22 @@
 package models
 
 type Credential struct {
-	Name       string
-	Host       string
-	InsertPriv string
-	SelectPriv string
+	Name           string
+	Host           string
+	InsertPriv     string
+	SelectPriv     string
+	UpdatePriv     string
+	DeletePriv     string
+	CreatePriv     string
+	DropPriv       string
+	ReloadPriv     string
+	ShutdownPriv   string
+	ProcessPriv    string
+	FilePriv       string
+	GrantPriv      string
+	ReferencesPriv string
+	IndexPriv      string
+	AlterPriv      string
 }
 
 func (crendential Credential) FilterValue() string {

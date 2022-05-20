@@ -12,7 +12,7 @@ type Mysql struct {
 func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	var users []models.Credential
 
-	db, err := sql.Open("mysql", "root:root@/mysql")
+	db, err := sql.Open("mysql", "root:@/mysql")
 
 	if err != nil {
 		panic(err)
@@ -53,10 +53,22 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 		}
 
 		userFind := models.Credential{
-			Name:       user,
-			Host:       host,
-			InsertPriv: insertPriv,
-			SelectPriv: selectPriv,
+			Name:           user,
+			Host:           host,
+			InsertPriv:     insertPriv,
+			SelectPriv:     selectPriv,
+			UpdatePriv:     updatePriv,
+			DeletePriv:     deletePriv,
+			CreatePriv:     createPriv,
+			DropPriv:       dropPriv,
+			ReloadPriv:     reloadPriv,
+			ShutdownPriv:   shutdownPriv,
+			ProcessPriv:    processPriv,
+			FilePriv:       filePriv,
+			GrantPriv:      grantPriv,
+			ReferencesPriv: referencesPriv,
+			IndexPriv:      indexPriv,
+			AlterPriv:      alterPriv,
 		}
 
 		users = append(users, userFind)

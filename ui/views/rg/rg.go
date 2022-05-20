@@ -182,36 +182,70 @@ func (m *Model) renderViewport(user *models.Credential) string {
 		vp         string = ""
 		selectPriv string = ""
 		insertPriv string = ""
+		updatePriv string = ""
+		deletePriv string = ""
+		createPriv string = ""
 	)
 
 	if user.SelectPriv == "Y" {
 		selectPriv = "Sentencias SELECT"
-	} else {
-		selectPriv = ""
 	}
 
 	if user.InsertPriv == "Y" {
 		insertPriv = "Sentencias INSERT"
-	} else {
-		insertPriv = ""
+	}
+
+	if user.UpdatePriv == "Y" {
+		updatePriv = "Sentencias UPDATE"
+	}
+
+	if user.DeletePriv == "Y" {
+		deletePriv = "Sentencias DELETE"
+	}
+
+	if user.CreatePriv == "Y" {
+		createPriv = "Sentencias CREATE"
 	}
 
 	vp = fmt.Sprintf(
 		"%s\n\nPrivilegios \n",
 		"",
 	)
-
 	vp = fmt.Sprintf(
 		"%s\n     %s\n",
 		vp,
 		selectPriv,
 	)
-
 	vp = fmt.Sprintf(
 		"%s\n     %s\n",
 		vp,
 		insertPriv,
 	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		updatePriv,
+	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		deletePriv,
+	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		createPriv,
+	)
 
 	return vp
 }
+
+/*dropPriv       string = ""
+reloadPriv     string = ""
+shutdownPriv   string = ""
+processPriv    string = ""
+filePriv       string = ""
+grantPriv      string = ""
+referencesPriv string = ""
+indexPriv      string = ""
+alterPriv      string = ""*/
