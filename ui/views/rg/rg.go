@@ -180,11 +180,15 @@ func (m *Model) refresh() tea.Cmd {
 func (m *Model) renderViewport(user *models.Credential) string {
 	var (
 		vp         string = ""
-		selectPriv string = ""
 		insertPriv string = ""
+		selectPriv string = ""
 		updatePriv string = ""
 		deletePriv string = ""
 		createPriv string = ""
+		dropPriv   string = ""
+		grantPriv  string = ""
+		indexPriv  string = ""
+		alterPriv  string = ""
 	)
 
 	if user.SelectPriv == "Y" {
@@ -205,6 +209,22 @@ func (m *Model) renderViewport(user *models.Credential) string {
 
 	if user.CreatePriv == "Y" {
 		createPriv = "Sentencias CREATE"
+	}
+
+	if user.DropPriv == "Y" {
+		dropPriv = "Sentencias DROP"
+	}
+
+	if user.GrantPriv == "Y" {
+		grantPriv = "Sentencias GRANT"
+	}
+
+	if user.IndexPriv == "Y" {
+		indexPriv = "Sentencias INDEX"
+	}
+
+	if user.AlterPriv == "Y" {
+		alterPriv = "Sentencias ALTER"
 	}
 
 	vp = fmt.Sprintf(
@@ -236,16 +256,29 @@ func (m *Model) renderViewport(user *models.Credential) string {
 		vp,
 		createPriv,
 	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		dropPriv,
+	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		grantPriv,
+	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		indexPriv,
+	)
+	vp = fmt.Sprintf(
+		"%s\n     %s\n",
+		vp,
+		alterPriv,
+	)
 
 	return vp
 }
 
-/*dropPriv       string = ""
-reloadPriv     string = ""
-shutdownPriv   string = ""
-processPriv    string = ""
-filePriv       string = ""
-grantPriv      string = ""
-referencesPriv string = ""
-indexPriv      string = ""
-alterPriv      string = ""*/
+/*
+ */
