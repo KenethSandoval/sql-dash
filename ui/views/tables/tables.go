@@ -176,13 +176,33 @@ func (m *Model) refresh() tea.Cmd {
 }
 
 func (m *Model) renderViewport() string {
-	_, err := (*m.ctx.Client).DescribeTables()
+	table, err := (*m.ctx.Client).DescribeTables()
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
-	var vp string = ""
+	var (
+		vp string = ""
+	)
 
-	vp = fmt.Sprintf(" Field: %s\n\n\n", "prueba")
+	vp = fmt.Sprintf(
+		"Field",
+	)
+
+	vp = fmt.Sprintf(
+		"%s      Type",
+		vp,
+	)
+
+	vp = fmt.Sprintf("%s\n\n", vp)
+
+	for _, t := range table {
+		vp = fmt.Sprintf(
+			"%s%s      %s\n",
+			vp,
+			t.Field,
+			t.Type,
+		)
+	}
 
 	return vp
 }

@@ -279,6 +279,3 @@ func (m *Model) renderViewport(user *models.Credential) string {
 
 	return vp
 }
-
-/*
- */
