@@ -3,50 +3,11 @@ package mysql
 import (
 	"adminmsyql/dash/adapter"
 	"adminmsyql/dash/models"
+	"adminmsyql/ui/common"
 	"database/sql"
-	"fmt"
-	"strings"
-
-	"github.com/charmbracelet/lipgloss"
 )
 
 type Mysql struct {
-}
-
-const (
-	width = 96
-)
-
-var (
-	docStyle = lipgloss.NewStyle().Padding(1, 2, 1, 2)
-
-	subtle = lipgloss.AdaptiveColor{Light: "#D9DCCF", Dark: "#383838"}
-
-	dialogBoxStyle = lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("#874BFD")).
-			Padding(1, 0).
-			BorderTop(true).
-			BorderLeft(true).
-			BorderRight(true).
-			BorderBottom(true)
-)
-
-func errorDialog(error string) {
-	doc := strings.Builder{}
-
-	errorMessage := lipgloss.NewStyle().Width(50).Align(lipgloss.Center).Render(error)
-	ui := lipgloss.JoinVertical(lipgloss.Center, errorMessage)
-	dialog := lipgloss.Place(width, 9,
-		lipgloss.Center, lipgloss.Center,
-		dialogBoxStyle.Render(ui),
-		lipgloss.WithWhitespaceChars("猫咪"),
-		lipgloss.WithWhitespaceForeground(subtle),
-	)
-
-	doc.WriteString(dialog)
-
-	fmt.Println(docStyle.Render(doc.String()))
 }
 
 func (client *Mysql) ListProfile() ([]models.Credential, error) {
@@ -57,7 +18,7 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	// TODO: add flag debug
 	defer func() {
 		if r := recover(); r != nil {
-			errorDialog(err.Error())
+			common.ErrorDialog(err.Error())
 		}
 	}()
 
