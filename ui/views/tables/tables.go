@@ -192,15 +192,20 @@ func (m *Model) renderViewport() string {
 		"%s      Type",
 		vp,
 	)
+	vp = fmt.Sprintf(
+		"%s        Null",
+		vp,
+	)
 
 	vp = fmt.Sprintf("%s\n\n", vp)
 
 	for _, t := range table {
 		vp = fmt.Sprintf(
-			"%s%s      %s\n",
+			"%s%s      %s       %s\n",
 			vp,
 			t.Field,
 			t.Type,
+			t.Null,
 		)
 	}
 

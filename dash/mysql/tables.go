@@ -82,6 +82,7 @@ func (client *Mysql) DescribeTables() ([]models.TableDescribe, error) {
 		table := models.TableDescribe{
 			Field: field,
 			Type:  typeTb,
+			Null:  null,
 		}
 
 		tableDesc = append(tableDesc, table)

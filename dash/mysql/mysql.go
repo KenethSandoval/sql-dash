@@ -44,7 +44,7 @@ func errorDialog(error string) {
 		lipgloss.WithWhitespaceForeground(subtle),
 	)
 
-	doc.WriteString(dialog + "\n\n")
+	doc.WriteString(dialog)
 
 	fmt.Println(docStyle.Render(doc.String()))
 }
@@ -54,17 +54,19 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 
 	db, err := sql.Open("mysql", "root:root@/mysql")
 
-	if err != nil {
-		panic(err)
-	}
+	// TODO: add flag debug
+	defer func() {
+		if r := recover(); r != nil {
+			errorDialog(err.Error())
+		}
+	}()
 
-	rows, err := db.Query(`SELECT user, host, insert_priv, select_priv, update_priv, delete_priv, create_priv, drop_priv,
-                               grant_priv, index_priv, alter_priv
+	rows, err := db.Query(`SELECT user, host,
+                                      insert_priv, select_priv,
+                                      update_priv, delete_priv,
+                                      create_priv, drop_priv,
+                                      grant_priv, index_priv, alter_priv
                                FROM db where user not like '%mysql%'`)
-
-	if err != nil {
-		errorDialog("127.0.0.1:3306: connect: connection refused")
-	}
 
 	defer db.Close()
 
@@ -83,11 +85,10 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 			alterPriv  string
 		)
 
-		err = rows.Scan(&user, &host, &insertPriv, &selectPriv, &updatePriv, &deletePriv, &createPriv, &dropPriv,
-			&grantPriv, &indexPriv, &alterPriv)
-		if err != nil {
-			panic(err.Error())
-		}
+		err = rows.Scan(&user, &host, &insertPriv,
+			&selectPriv, &updatePriv, &deletePriv,
+			&createPriv, &dropPriv, &grantPriv,
+			&indexPriv, &alterPriv)
 
 		userFind := models.Credential{
 			Name:       user,
@@ -104,9 +105,6 @@ func (client *Mysql) ListProfile() ([]models.Credential, error) {
 		}
 
 		users = append(users, userFind)
-	}
-	if err = rows.Err(); err != nil {
-		panic(err.Error())
 	}
 
 	return users, nil
