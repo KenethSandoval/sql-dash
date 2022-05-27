@@ -10,6 +10,7 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/glamour"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -176,6 +177,16 @@ func (m *Model) refresh() tea.Cmd {
 }
 
 func (m *Model) renderViewport() string {
+	/*in := `
+
+	This is a simple example of Markdown rendering with Glamour!
+	Check out the [other examples](https://github.com/charmbracelet/glamour/tree/master/examples) too.
+
+	Bye!
+	`
+		out, _ := glamour.Render(in, "dark")
+		return out*/
+
 	table, err := (*m.ctx.Client).DescribeTables()
 	if err != nil {
 		fmt.Printf("%s", err)
@@ -185,23 +196,15 @@ func (m *Model) renderViewport() string {
 	)
 
 	vp = fmt.Sprintf(
-		"Field",
+		`
+ | Field       | Type           | Null     |
+ | ---         | ---            | ---      |`,
 	)
-
-	vp = fmt.Sprintf(
-		"%s      Type",
-		vp,
-	)
-	vp = fmt.Sprintf(
-		"%s        Null",
-		vp,
-	)
-
-	vp = fmt.Sprintf("%s\n\n", vp)
 
 	for _, t := range table {
+
 		vp = fmt.Sprintf(
-			"%s%s      %s       %s\n",
+			"%s\n | %s        | %s       | %s",
 			vp,
 			t.Field,
 			t.Type,
@@ -209,5 +212,6 @@ func (m *Model) renderViewport() string {
 		)
 	}
 
-	return vp
+	out, _ := glamour.Render(vp, "dark")
+	return out
 }
