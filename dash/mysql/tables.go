@@ -3,6 +3,7 @@ package mysql
 import (
 	"adminmsyql/dash/models"
 	"database/sql"
+	"fmt"
 )
 
 func (client *Mysql) ListTables() ([]models.Tables, error) {
@@ -45,7 +46,7 @@ func (client *Mysql) ListTables() ([]models.Tables, error) {
 	return tables, nil
 }
 
-func (client *Mysql) DescribeTables() ([]models.TableDescribe, error) {
+func (client *Mysql) DescribeTables(nameTable string) ([]models.TableDescribe, error) {
 	var tableDesc []models.TableDescribe
 
 	// TODO: refactor
@@ -56,7 +57,8 @@ func (client *Mysql) DescribeTables() ([]models.TableDescribe, error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("DESCRIBE datatest")
+	tableSeleted := fmt.Sprintf("DESCRIBE %s", nameTable)
+	rows, err := db.Query(tableSeleted)
 	if err != nil {
 		panic(err.Error())
 	}

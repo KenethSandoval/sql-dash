@@ -101,9 +101,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.focused = 0
 			}
 		case key.Matches(msg, m.keymap.Select):
-			_, ok := m.list.SelectedItem().(models.Tables)
+			i, ok := m.list.SelectedItem().(models.Tables)
+
 			if ok {
-				m.viewport.SetContent(m.renderViewport())
+				m.viewport.SetContent(m.renderViewport(i.Name))
 				return m, nil
 			}
 		}
@@ -176,18 +177,8 @@ func (m *Model) refresh() tea.Cmd {
 	}
 }
 
-func (m *Model) renderViewport() string {
-	/*in := `
-
-	This is a simple example of Markdown rendering with Glamour!
-	Check out the [other examples](https://github.com/charmbracelet/glamour/tree/master/examples) too.
-
-	Bye!
-	`
-		out, _ := glamour.Render(in, "dark")
-		return out*/
-
-	table, err := (*m.ctx.Client).DescribeTables()
+func (m *Model) renderViewport(i string) string {
+	table, err := (*m.ctx.Client).DescribeTables(i)
 	if err != nil {
 		fmt.Printf("%s", err)
 	}
