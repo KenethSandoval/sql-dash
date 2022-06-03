@@ -27,3 +27,4 @@ _clean docker and binary sqldash_
 ```sh
 $ make clean
 ```
+## Config file
