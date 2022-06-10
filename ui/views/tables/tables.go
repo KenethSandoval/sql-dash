@@ -179,6 +179,7 @@ func (m *Model) refresh() tea.Cmd {
 
 func (m *Model) renderViewport(i string) string {
 	table, err := (*m.ctx.Client).DescribeTables(i)
+
 	if err != nil {
 		fmt.Printf("%s", err)
 	}

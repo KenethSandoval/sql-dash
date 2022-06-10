@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"adminmsyql/ui/bar"
 	"adminmsyql/ui/navigation"
 	"adminmsyql/ui/uictx"
 	"adminmsyql/ui/views"
@@ -47,11 +46,10 @@ var DefaultKeyMap = KeyMap{
 }
 
 type Model struct {
-	keymap    KeyMap
-	nav       navigation.Model
-	views     []views.View
-	statusBar bar.Model
-	ctx       *uictx.Ctx
+	keymap KeyMap
+	nav    navigation.Model
+	views  []views.View
+	ctx    *uictx.Ctx
 }
 
 func NewModel(ctx *uictx.Ctx) Model {
@@ -117,7 +115,6 @@ func (m Model) View() string {
 	s := strings.Builder{}
 	s.WriteString(m.nav.View() + "\n\n")
 	s.WriteString(m.views[m.nav.CurrentId].View())
-	s.WriteString(m.statusBar.View())
 	return s.String()
 }
 
@@ -125,5 +122,5 @@ func (m Model) setSizes(winWidth int, winHeight int) {
 	(*m.ctx).Screen[0] = winWidth
 	(*m.ctx).Screen[1] = winHeight
 	m.ctx.Content[0] = m.ctx.Screen[0]
-	m.ctx.Content[1] = m.ctx.Screen[1] - 5
+	m.ctx.Content[1] = m.ctx.Screen[1] - 8
 }

@@ -14,12 +14,12 @@ type Dash interface {
 	GetCapabilities() []adapter.Capability
 	//
 	ListProfile() ([]models.Credential, error)
-
 	//
 	ListTables() ([]models.Tables, error)
-
 	//
 	DescribeTables(nameTable string) ([]models.TableDescribe, error)
+	//
+	InfoStatusBar() models.Info
 }
 
 func New(clientType *string) (Dash, error) {

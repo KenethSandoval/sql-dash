@@ -86,3 +86,31 @@ func (client *Mysql) GetCapabilities() []adapter.Capability {
 
 	return caps
 }
+
+func (client *Mysql) InfoStatusBar() models.Info {
+	var info models.Info
+	db, err := sql.Open("mysql", "root:root@/mysql")
+
+	defer func() {
+		if r := recover(); r != nil {
+			common.ErrorDialog(err.Error())
+		}
+	}()
+
+	rows, err := db.Query(`select version() as "version" from dual`)
+
+	defer db.Close()
+
+	for rows.Next() {
+		var version string
+
+		err = rows.Scan(&version)
+
+		info = models.Info{
+			Version: version,
+		}
+
+	}
+
+	return info
+}
