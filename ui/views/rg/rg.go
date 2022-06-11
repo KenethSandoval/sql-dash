@@ -2,6 +2,7 @@ package rg
 
 import (
 	"adminmsyql/dash/models"
+	"adminmsyql/ui/bar"
 	"adminmsyql/ui/uictx"
 	"fmt"
 	"math"
@@ -62,6 +63,7 @@ type Model struct {
 	items    []list.Item
 	viewport viewport.Model
 	ctx      *uictx.Ctx
+	bar      bar.Bubble
 
 	focused    int
 	focusables [2]tea.Model
@@ -149,15 +151,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m Model) View() string {
-	var view string
 
-	view = lipgloss.JoinHorizontal(
-		lipgloss.Top,
-		listStyle.Render(m.list.View()),
-		viewportStyle.Render(m.viewport.View()),
+	return lipgloss.JoinVertical(lipgloss.Top,
+		lipgloss.JoinHorizontal(lipgloss.Top, listStyle.Render(m.list.View()),
+			viewportStyle.Render(m.viewport.View()),
+			m.bar.View(),
+		),
 	)
-
-	return view
 }
 
 func (m *Model) refresh() tea.Cmd {
