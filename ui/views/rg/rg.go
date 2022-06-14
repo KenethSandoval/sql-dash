@@ -74,10 +74,29 @@ func (m Model) Init() tea.Cmd {
 }
 
 func NewModel(ctx *uictx.Ctx) Model {
+	statusbarModel := bar.New(
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+		},
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+		},
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+		},
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
+		},
+	)
 
 	m := Model{
 		keymap:  DefaultKeyMap,
 		focused: 0,
+		bar:     statusbarModel,
 	}
 
 	m.list = list.New(m.items, list.NewDefaultDelegate(), 0, 0)
@@ -95,6 +114,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch {
 		case key.Matches(msg, m.keymap.Refresh):
 			m.ctx.Loading = true
+
 			cmds = append(cmds, m.refresh())
 
 		case key.Matches(msg, m.keymap.SwitchFocus):
@@ -175,6 +195,20 @@ func (m *Model) refresh() tea.Cmd {
 
 		return items
 	}
+}
+
+func (m *Model) updateStatusbar() {
+	// logoText := fmt.Sprintf("%s %s", icons.IconDef["dir"].GetGlyph(), "FM")
+	//if !b.config.Settings.ShowIcons {
+	//logoText = "FM"
+	//}
+
+	m.bar.SetContent(
+		"test",
+		"test2",
+		"test3",
+		"test4",
+	)
 }
 
 func (m *Model) renderViewport(user *models.Credential) string {
