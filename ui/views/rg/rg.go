@@ -198,11 +198,6 @@ func (m *Model) refresh() tea.Cmd {
 }
 
 func (m *Model) updateStatusbar() {
-	// logoText := fmt.Sprintf("%s %s", icons.IconDef["dir"].GetGlyph(), "FM")
-	//if !b.config.Settings.ShowIcons {
-	//logoText = "FM"
-	//}
-
 	m.bar.SetContent(
 		"test",
 		"test2",
