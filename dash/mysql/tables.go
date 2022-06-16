@@ -1,15 +1,23 @@
 package mysql
 
 import (
+	"adminmsyql/config"
 	"adminmsyql/dash/models"
 	"database/sql"
 	"fmt"
+	"log"
 )
 
 func (client *Mysql) ListTables() ([]models.Tables, error) {
 	var tables []models.Tables
+	cfg, err := config.ParserConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	db, err := sql.Open("mysql", "root:root@/testdash")
+	credentials := fmt.Sprintf("%s:%s@/mysql", cfg.Credentials.Username, cfg.Credentials.Password)
+
+	db, err := sql.Open("mysql", credentials)
 
 	if err != nil {
 		panic(err)
@@ -50,7 +58,14 @@ func (client *Mysql) DescribeTables(nameTable string) ([]models.TableDescribe, e
 	var tableDesc []models.TableDescribe
 
 	// TODO: refactor
-	db, err := sql.Open("mysql", "root:root@/testdash")
+	cfg, err := config.ParserConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	credentials := fmt.Sprintf("%s:%s@/mysql", cfg.Credentials.Username, cfg.Credentials.Password)
+
+	db, err := sql.Open("mysql", credentials)
 
 	if err != nil {
 		panic(err)

@@ -1,10 +1,13 @@
 package mysql
 
 import (
+	"adminmsyql/config"
 	"adminmsyql/dash/adapter"
 	"adminmsyql/dash/models"
 	"adminmsyql/ui/common"
 	"database/sql"
+	"fmt"
+	"log"
 )
 
 type Mysql struct {
@@ -13,7 +16,14 @@ type Mysql struct {
 func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	var users []models.Credential
 
-	db, err := sql.Open("mysql", "root:root@/mysql")
+	cfg, err := config.ParserConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	credentials := fmt.Sprintf("%s:%s@/mysql", cfg.Credentials.Username, cfg.Credentials.Password)
+
+	db, err := sql.Open("mysql", credentials)
 
 	// TODO: add flag debug
 	defer func() {
