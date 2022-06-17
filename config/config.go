@@ -20,6 +20,7 @@ const ConfigFileName = "config.yml"
 type SettingsConfig struct {
 	Username string `yaml:"username"`
 	Password string `yaml:"password"`
+	Database string `yaml:"database"`
 }
 
 type configError struct {
@@ -32,7 +33,7 @@ type configError struct {
 type ConfigParser struct{}
 
 type Config struct {
-	Credentials SettingsConfig `yaml:"settings"`
+	Settings SettingsConfig `yaml:"settings"`
 }
 
 // getDefaultConfig returns the default credentials for the application.
@@ -41,6 +42,7 @@ func (parser ConfigParser) getDefaultConfig() Config {
 		SettingsConfig{
 			Username: "root",
 			Password: "root",
+			Database: "mysql",
 		},
 	}
 }

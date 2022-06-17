@@ -20,6 +20,8 @@ type Dash interface {
 	DescribeTables(nameTable string) ([]models.TableDescribe, error)
 	//
 	InfoStatusBar() models.Info
+	//
+	LoadClients() error
 }
 
 func New(clientType *string) (Dash, error) {
@@ -28,6 +30,11 @@ func New(clientType *string) (Dash, error) {
 	switch *clientType {
 	case "mysql":
 		client = new(mysql.Mysql)
+	}
+
+	err := client.LoadClients()
+	if err != nil {
+		return nil, err
 	}
 
 	return client, nil

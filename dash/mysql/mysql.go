@@ -11,17 +11,15 @@ import (
 )
 
 type Mysql struct {
+	Username string
+	Password string
+	Database string
 }
 
 func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	var users []models.Credential
 
-	cfg, err := config.ParserConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	credentials := fmt.Sprintf("%s:%s@/mysql", cfg.Credentials.Username, cfg.Credentials.Password)
+	credentials := fmt.Sprintf("%s:%s@/mysql", client.Username, client.Password)
 
 	db, err := sql.Open("mysql", credentials)
 
@@ -123,4 +121,17 @@ func (client *Mysql) InfoStatusBar() models.Info {
 	}
 
 	return info
+}
+
+func (client *Mysql) LoadClients() error {
+	cfg, err := config.ParserConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	client.Username = cfg.Settings.Username
+	client.Password = cfg.Settings.Password
+	client.Database = cfg.Settings.Database
+
+	return nil
 }

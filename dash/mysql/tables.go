@@ -1,21 +1,15 @@
 package mysql
 
 import (
-	"adminmsyql/config"
 	"adminmsyql/dash/models"
 	"database/sql"
 	"fmt"
-	"log"
 )
 
 func (client *Mysql) ListTables() ([]models.Tables, error) {
 	var tables []models.Tables
-	cfg, err := config.ParserConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	credentials := fmt.Sprintf("%s:%s@/mysql", cfg.Credentials.Username, cfg.Credentials.Password)
+	credentials := fmt.Sprintf("%s:%s@/%s", client.Username, client.Password, client.Database)
 
 	db, err := sql.Open("mysql", credentials)
 
@@ -57,13 +51,7 @@ func (client *Mysql) ListTables() ([]models.Tables, error) {
 func (client *Mysql) DescribeTables(nameTable string) ([]models.TableDescribe, error) {
 	var tableDesc []models.TableDescribe
 
-	// TODO: refactor
-	cfg, err := config.ParserConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	credentials := fmt.Sprintf("%s:%s@/mysql", cfg.Credentials.Username, cfg.Credentials.Password)
+	credentials := fmt.Sprintf("%s:%s@/%s", client.Username, client.Password, client.Database)
 
 	db, err := sql.Open("mysql", credentials)
 
