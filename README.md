@@ -27,4 +27,20 @@ _clean docker and binary sqldash_
 ```sh
 $ make clean
 ```
-## Config file
+
+## Configuration
+
+A config file will be generated when you first run `sql-dash`. Depending on your operating system it can be found in one of the following locations:
+
+* macOS: ~/Library/Application\ Support/sql/config.yml
+* Linux: ~/.config/sql/config.yml
+* Windows: C:\Users\me\AppData\Roaming\sql\config.yml
+
+It will include the following default settings:
+
+```yml
+settings:
+    username: root
+    password: root
+    database: testdas
+```
