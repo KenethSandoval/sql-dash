@@ -2,7 +2,6 @@ package rg
 
 import (
 	"adminmsyql/dash/models"
-	"adminmsyql/ui/bar"
 	"adminmsyql/ui/uictx"
 	"fmt"
 	"math"
@@ -63,7 +62,6 @@ type Model struct {
 	items    []list.Item
 	viewport viewport.Model
 	ctx      *uictx.Ctx
-	bar      bar.Bubble
 
 	focused    int
 	focusables [2]tea.Model
@@ -74,29 +72,9 @@ func (m Model) Init() tea.Cmd {
 }
 
 func NewModel(ctx *uictx.Ctx) Model {
-	statusbarModel := bar.New(
-		bar.ColorConfig{
-			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-		},
-		bar.ColorConfig{
-			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-		},
-		bar.ColorConfig{
-			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-		},
-		bar.ColorConfig{
-			Foreground: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-			Background: lipgloss.AdaptiveColor{Light: "236", Dark: "248"},
-		},
-	)
-
 	m := Model{
 		keymap:  DefaultKeyMap,
 		focused: 0,
-		bar:     statusbarModel,
 	}
 
 	m.list = list.New(m.items, list.NewDefaultDelegate(), 0, 0)
@@ -172,11 +150,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m Model) View() string {
 
-	return lipgloss.JoinVertical(lipgloss.Top,
-		lipgloss.JoinHorizontal(lipgloss.Top, listStyle.Render(m.list.View()),
-			viewportStyle.Render(m.viewport.View()),
-			m.bar.View(),
-		),
+	return lipgloss.JoinHorizontal(lipgloss.Top, listStyle.Render(m.list.View()),
+		viewportStyle.Render(m.viewport.View()),
 	)
 }
 
@@ -195,15 +170,6 @@ func (m *Model) refresh() tea.Cmd {
 
 		return items
 	}
-}
-
-func (m *Model) updateStatusbar() {
-	m.bar.SetContent(
-		"test",
-		"test2",
-		"test3",
-		"test4",
-	)
 }
 
 func (m *Model) renderViewport(user *models.Credential) string {

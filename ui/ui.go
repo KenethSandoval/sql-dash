@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"adminmsyql/ui/bar"
 	"adminmsyql/ui/navigation"
 	"adminmsyql/ui/uictx"
 	"adminmsyql/ui/views"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 type KeyMap struct {
@@ -46,16 +48,37 @@ var DefaultKeyMap = KeyMap{
 }
 
 type Model struct {
-	keymap KeyMap
-	nav    navigation.Model
-	views  []views.View
-	ctx    *uictx.Ctx
+	keymap    KeyMap
+	nav       navigation.Model
+	views     []views.View
+	ctx       *uictx.Ctx
+	statusbar bar.Bubble
 }
 
 func NewModel(ctx *uictx.Ctx) Model {
+	sb := bar.New(
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Dark: "#ffffff", Light: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Light: "#F25D94", Dark: "#F25D94"},
+		},
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "#ffffff", Dark: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Light: "#3c3836", Dark: "#3c3836"},
+		},
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "#ffffff", Dark: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Light: "#A550DF", Dark: "#A550DF"},
+		},
+		bar.ColorConfig{
+			Foreground: lipgloss.AdaptiveColor{Light: "#ffffff", Dark: "#ffffff"},
+			Background: lipgloss.AdaptiveColor{Light: "#6124DF", Dark: "#6124DF"},
+		},
+	)
+
 	m := Model{
-		keymap: DefaultKeyMap,
-		ctx:    ctx,
+		keymap:    DefaultKeyMap,
+		ctx:       ctx,
+		statusbar: sb,
 	}
 	m.nav = navigation.NewModel(m.ctx)
 
@@ -93,6 +116,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.WindowSizeMsg:
 		m.setSizes(msg.Width, msg.Height)
+		m.statusbar.SetSize(msg.Width)
+		m.statusbar.SetContent("test.sql", "~/.config/sql", "1/23", "root")
 		for i := range m.views {
 			v, cmd := m.views[i].Update(msg)
 			m.views[i] = v
@@ -115,7 +140,12 @@ func (m Model) View() string {
 	s := strings.Builder{}
 	s.WriteString(m.nav.View() + "\n\n")
 	s.WriteString(m.views[m.nav.CurrentId].View())
-	return s.String()
+
+	return lipgloss.JoinVertical(
+		lipgloss.Top,
+		s.String(),
+		m.statusbar.View(),
+	)
 }
 
 func (m Model) setSizes(winWidth int, winHeight int) {
