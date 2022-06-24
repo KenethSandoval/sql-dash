@@ -4,8 +4,6 @@ import (
 	"adminmsyql/dash/adapter"
 	"adminmsyql/dash/models"
 	"adminmsyql/dash/mysql"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 // Dash

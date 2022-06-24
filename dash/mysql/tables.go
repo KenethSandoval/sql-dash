@@ -4,6 +4,8 @@ import (
 	"adminmsyql/dash/models"
 	"database/sql"
 	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func (client *Mysql) ListTables() ([]models.Tables, error) {
