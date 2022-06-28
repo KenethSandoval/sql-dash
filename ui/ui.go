@@ -117,7 +117,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		m.setSizes(msg.Width, msg.Height)
 		m.statusbar.SetSize(msg.Width)
-		m.statusbar.SetContent("test.sql", "~/.config/sql", "1/23", "root")
+		m.renderContentBar()
 		for i := range m.views {
 			v, cmd := m.views[i].Update(msg)
 			m.views[i] = v
@@ -146,6 +146,12 @@ func (m Model) View() string {
 		s.String(),
 		m.statusbar.View(),
 	)
+}
+
+func (m *Model) renderContentBar() {
+	version := (*m.ctx.Client).InfoStatusBar()
+	m.statusbar.SetContent(version.Version, "~/.config/sql", "", version.UserConn)
+
 }
 
 func (m Model) setSizes(winWidth int, winHeight int) {

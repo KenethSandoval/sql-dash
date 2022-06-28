@@ -99,7 +99,10 @@ func (client *Mysql) GetCapabilities() []adapter.Capability {
 
 func (client *Mysql) InfoStatusBar() models.Info {
 	var info models.Info
-	db, err := sql.Open("mysql", "root:root@/mysql")
+
+	credentials := fmt.Sprintf("%s:%s@/mysql", client.Username, client.Password)
+
+	db, err := sql.Open("mysql", credentials)
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -107,17 +110,21 @@ func (client *Mysql) InfoStatusBar() models.Info {
 		}
 	}()
 
-	rows, err := db.Query(`select version() as "version" from dual`)
+	rows, err := db.Query(`select version() as "version", current_user() as "user" from dual`)
 
 	defer db.Close()
 
 	for rows.Next() {
-		var version string
+		var (
+			version string
+			user    string
+		)
 
-		err = rows.Scan(&version)
+		err = rows.Scan(&version, &user)
 
 		info = models.Info{
-			Version: version,
+			Version:  version,
+			UserConn: user,
 		}
 
 	}
