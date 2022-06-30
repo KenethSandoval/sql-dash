@@ -169,3 +169,9 @@ func ParserConfig() (Config, error) {
 
 	return config, nil
 }
+
+// GetConfigDir return config
+func GetConfigDir() string {
+	dir, _ := os.UserConfigDir()
+	return filepath.Join(dir, AppDir, ConfigFileName)
+}

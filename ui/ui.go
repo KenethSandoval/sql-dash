@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"adminmsyql/config"
 	"adminmsyql/ui/bar"
 	"adminmsyql/ui/navigation"
 	"adminmsyql/ui/uictx"
@@ -150,7 +151,7 @@ func (m Model) View() string {
 
 func (m *Model) renderContentBar() {
 	version := (*m.ctx.Client).InfoStatusBar()
-	m.statusbar.SetContent(version.Version, "~/.config/sql", "", version.UserConn)
+	m.statusbar.SetContent(version.Version, config.GetConfigDir(), "", version.UserConn)
 
 }
 
