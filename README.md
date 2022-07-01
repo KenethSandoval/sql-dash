@@ -30,11 +30,11 @@ $ make clean
 
 ## Configuration
 
-A config file will be generated when you first run `sql-dash`. Depending on your operating system it can be found in one of the following locations:
+A config file will be generated when you first run `tuidb`. Depending on your operating system it can be found in one of the following locations:
 
-* macOS: ~/Library/Application\ Support/sql/config.yml
-* Linux: ~/.config/sql/config.yml
-* Windows: C:\Users\me\AppData\Roaming\sql\config.yml
+* macOS: ~/Library/Application\ Support/tuidb/config.yml
+* Linux: ~/.config/tuidb/config.yml
+* Windows: C:\Users\me\AppData\Roaming\tuidb\config.yml
 
 It will include the following default settings:
 
