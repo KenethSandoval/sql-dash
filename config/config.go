@@ -11,7 +11,7 @@ import (
 )
 
 // AppDir is the name of the directory where the config file is stored
-const AppDir = "sql"
+const AppDir = "tuidb"
 
 // ConfigFileName is the name of the config file that gets created
 const ConfigFileName = "config.yml"
