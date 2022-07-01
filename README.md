@@ -1,4 +1,4 @@
-# Sql Dash
+# TUIDB
 
 _A database administrator only for consultation and change of user with privileges and information of tables of the db_
 
