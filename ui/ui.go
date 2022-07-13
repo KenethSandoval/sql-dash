@@ -159,5 +159,5 @@ func (m Model) setSizes(winWidth int, winHeight int) {
 	(*m.ctx).Screen[0] = winWidth
 	(*m.ctx).Screen[1] = winHeight
 	m.ctx.Content[0] = m.ctx.Screen[0]
-	m.ctx.Content[1] = m.ctx.Screen[1] - 8
+	m.ctx.Content[1] = m.ctx.Screen[1] - 7
 }
