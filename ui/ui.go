@@ -26,7 +26,6 @@ type KeyMap struct {
 
 var DefaultKeyMap = KeyMap{
 	FirstTab: key.NewBinding(
-		// TODO: MOD + 1 or F1 test
 		key.WithKeys("1"),
 		key.WithHelp("1", "First tab"),
 	),

@@ -5,12 +5,12 @@ SHELL=/bin/bash
 all: compile
 
 clean: stop
-	rm -rfv sqldash
+	rm -rfv tuidb
 	$(shell docker container rm $(shell docker ps -a --format "{{.ID}}"))
 
 compile:
 	@echo "Compiling..."
-	go build -o sqldash
+	go build -o tuidb
 
 up:
 	$(shell docker-compose up -d)
