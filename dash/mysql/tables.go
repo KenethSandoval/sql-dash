@@ -1,9 +1,9 @@
 package mysql
 
 import (
-	"adminmsyql/dash/models"
 	"database/sql"
 	"fmt"
+	"tuidb/dash/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )

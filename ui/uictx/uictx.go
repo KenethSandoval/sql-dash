@@ -1,6 +1,6 @@
 package uictx
 
-import "adminmsyql/dash"
+import "tuidb/dash"
 
 type Ctx struct {
 	Screen  [2]int

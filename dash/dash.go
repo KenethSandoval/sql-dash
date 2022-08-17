@@ -1,9 +1,9 @@
 package dash
 
 import (
-	"adminmsyql/dash/adapter"
-	"adminmsyql/dash/models"
-	"adminmsyql/dash/mysql"
+	"tuidb/dash/adapter"
+	"tuidb/dash/models"
+	"tuidb/dash/mysql"
 )
 
 // Dash

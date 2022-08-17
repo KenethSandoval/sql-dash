@@ -1,13 +1,13 @@
 package mysql
 
 import (
-	"adminmsyql/config"
-	"adminmsyql/dash/adapter"
-	"adminmsyql/dash/models"
-	"adminmsyql/ui/common"
 	"database/sql"
 	"fmt"
 	"log"
+	"tuidb/config"
+	"tuidb/dash/adapter"
+	"tuidb/dash/models"
+	"tuidb/ui/common"
 
 	_ "github.com/go-sql-driver/mysql"
 )

@@ -1,4 +1,4 @@
-module adminmsyql
+module tuidb
 
 go 1.17
 

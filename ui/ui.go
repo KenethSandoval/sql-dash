@@ -1,14 +1,14 @@
 package ui
 
 import (
-	"adminmsyql/config"
-	"adminmsyql/ui/bar"
-	"adminmsyql/ui/navigation"
-	"adminmsyql/ui/uictx"
-	"adminmsyql/ui/views"
-	"adminmsyql/ui/views/rg"
-	"adminmsyql/ui/views/tables"
 	"strings"
+	"tuidb/config"
+	"tuidb/ui/bar"
+	"tuidb/ui/navigation"
+	"tuidb/ui/uictx"
+	"tuidb/ui/views"
+	"tuidb/ui/views/rg"
+	"tuidb/ui/views/tables"
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"

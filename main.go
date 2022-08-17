@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"adminmsyql/dash"
-	"adminmsyql/ui"
-	"adminmsyql/ui/uictx"
+	"tuidb/dash"
+	"tuidb/ui"
+	"tuidb/ui/uictx"
 
 	tea "github.com/charmbracelet/bubbletea"
 )

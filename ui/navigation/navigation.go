@@ -1,8 +1,8 @@
 package navigation
 
 import (
-	"adminmsyql/ui/uictx"
 	"strings"
+	"tuidb/ui/uictx"
 
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"

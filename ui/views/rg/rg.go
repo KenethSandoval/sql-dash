@@ -1,10 +1,10 @@
 package rg
 
 import (
-	"adminmsyql/dash/models"
-	"adminmsyql/ui/uictx"
 	"fmt"
 	"math"
+	"tuidb/dash/models"
+	"tuidb/ui/uictx"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
