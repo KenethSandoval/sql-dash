@@ -2,7 +2,8 @@ package navigation
 
 import (
 	"strings"
-	"tuidb/ui/uictx"
+
+	"github.com/KenethSandoval/tuidb/ui/uictx"
 
 	"github.com/charmbracelet/bubbles/spinner"
 	tea "github.com/charmbracelet/bubbletea"

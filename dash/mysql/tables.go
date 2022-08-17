@@ -3,7 +3,8 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
-	"tuidb/dash/models"
+
+	"github.com/KenethSandoval/tuidb/dash/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )

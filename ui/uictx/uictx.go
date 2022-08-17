@@ -1,6 +1,6 @@
 package uictx
 
-import "tuidb/dash"
+import "github.com/KenethSandoval/tuidb/dash"
 
 type Ctx struct {
 	Screen  [2]int

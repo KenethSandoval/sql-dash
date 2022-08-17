@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"os"
 
-	"tuidb/dash"
-	"tuidb/ui"
-	"tuidb/ui/uictx"
+	"github.com/KenethSandoval/tuidb/dash"
+	"github.com/KenethSandoval/tuidb/ui"
+	"github.com/KenethSandoval/tuidb/ui/uictx"
 
 	tea "github.com/charmbracelet/bubbletea"
 )

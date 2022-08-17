@@ -2,13 +2,14 @@ package ui
 
 import (
 	"strings"
-	"tuidb/config"
-	"tuidb/ui/bar"
-	"tuidb/ui/navigation"
-	"tuidb/ui/uictx"
-	"tuidb/ui/views"
-	"tuidb/ui/views/rg"
-	"tuidb/ui/views/tables"
+
+	"github.com/KenethSandoval/tuidb/config"
+	"github.com/KenethSandoval/tuidb/ui/bar"
+	"github.com/KenethSandoval/tuidb/ui/navigation"
+	"github.com/KenethSandoval/tuidb/ui/uictx"
+	"github.com/KenethSandoval/tuidb/ui/views"
+	"github.com/KenethSandoval/tuidb/ui/views/rg"
+	"github.com/KenethSandoval/tuidb/ui/views/tables"
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"

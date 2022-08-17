@@ -3,8 +3,9 @@ package rg
 import (
 	"fmt"
 	"math"
-	"tuidb/dash/models"
-	"tuidb/ui/uictx"
+
+	"github.com/KenethSandoval/tuidb/dash/models"
+	"github.com/KenethSandoval/tuidb/ui/uictx"
 
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"

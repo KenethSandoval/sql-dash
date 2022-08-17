@@ -4,10 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"tuidb/config"
-	"tuidb/dash/adapter"
-	"tuidb/dash/models"
-	"tuidb/ui/common"
+
+	"github.com/KenethSandoval/tuidb/config"
+	"github.com/KenethSandoval/tuidb/dash/adapter"
+	"github.com/KenethSandoval/tuidb/dash/models"
+	"github.com/KenethSandoval/tuidb/ui/common"
 
 	_ "github.com/go-sql-driver/mysql"
 )

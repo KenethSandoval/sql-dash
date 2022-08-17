@@ -1,9 +1,9 @@
 package dash
 
 import (
-	"tuidb/dash/adapter"
-	"tuidb/dash/models"
-	"tuidb/dash/mysql"
+	"github.com/KenethSandoval/tuidb/dash/adapter"
+	"github.com/KenethSandoval/tuidb/dash/models"
+	"github.com/KenethSandoval/tuidb/dash/mysql"
 )
 
 // Dash

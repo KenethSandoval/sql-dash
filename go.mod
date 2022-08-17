@@ -1,4 +1,4 @@
-module tuidb
+module github.com/KenethSandoval/tuidb
 
 go 1.17
 
