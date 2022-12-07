@@ -19,7 +19,7 @@ const ConfigFileName = "config.yml"
 // SettingsConfig struct represents the config for the credentials.
 type SettingsConfig struct {
 	Username string `yaml:"username"`
-  Hostname string `yaml:"hostname"`
+	Hostname string `yaml:"hostname"`
 	Password string `yaml:"password"`
 	Database string `yaml:"database"`
 }
@@ -42,7 +42,7 @@ func (parser ConfigParser) getDefaultConfig() Config {
 	return Config{
 		SettingsConfig{
 			Username: "root",
-      Hostname: "127.0.0.1",
+			Hostname: "127.0.0.1",
 			Password: "root",
 			Database: "mysql",
 		},
