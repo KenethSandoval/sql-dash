@@ -12,7 +12,7 @@ import (
 func (client *Mysql) ListTables() ([]models.Tables, error) {
 	var tables []models.Tables
 
-	credentials := fmt.Sprintf("%s:%s@/%s", client.Username, client.Password, client.Database)
+	credentials := fmt.Sprintf("%s:%s@tcp(%s)/%s", client.Username, client.Password, client.Hostname ,client.Database)
 
 	db, err := sql.Open("mysql", credentials)
 
@@ -54,7 +54,7 @@ func (client *Mysql) ListTables() ([]models.Tables, error) {
 func (client *Mysql) DescribeTables(nameTable string) ([]models.TableDescribe, error) {
 	var tableDesc []models.TableDescribe
 
-	credentials := fmt.Sprintf("%s:%s@/%s", client.Username, client.Password, client.Database)
+	credentials := fmt.Sprintf("%s:%s@tcp(%s)/%s", client.Username, client.Password, client.Hostname, client.Database)
 
 	db, err := sql.Open("mysql", credentials)
 

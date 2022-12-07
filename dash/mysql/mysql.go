@@ -16,13 +16,14 @@ import (
 type Mysql struct {
 	Username string
 	Password string
+  Hostname string
 	Database string
 }
 
 func (client *Mysql) ListProfile() ([]models.Credential, error) {
 	var users []models.Credential
 
-	credentials := fmt.Sprintf("%s:%s@/mysql", client.Username, client.Password)
+	credentials := fmt.Sprintf("%s:%s@tcp(%s)/mysql", client.Username, client.Hostname, client.Password)
 
 	db, err := sql.Open("mysql", credentials)
 
@@ -101,7 +102,7 @@ func (client *Mysql) GetCapabilities() []adapter.Capability {
 func (client *Mysql) InfoStatusBar() models.Info {
 	var info models.Info
 
-	credentials := fmt.Sprintf("%s:%s@/mysql", client.Username, client.Password)
+	credentials := fmt.Sprintf("%s:%s@tcp(%s)/mysql", client.Username, client.Hostname ,client.Password)
 
 	db, err := sql.Open("mysql", credentials)
 
@@ -142,6 +143,7 @@ func (client *Mysql) LoadClients() error {
 	client.Username = cfg.Settings.Username
 	client.Password = cfg.Settings.Password
 	client.Database = cfg.Settings.Database
+  client.Hostname = cfg.Settings.Hostname
 
 	return nil
 }
