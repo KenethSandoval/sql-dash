@@ -64,7 +64,7 @@ func (e configError) Error() string {
 Create one under: %s
 Example of a config.yml file:
 %s
-For more info, go to https://github.com/KenethSandoval/sql-dash
+For more info, go to https://github.com/karchx/tuidb
 press q to exit.
 Original error: %v`,
 		path.Join(e.configDir, AppDir, ConfigFileName),
